@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Drawer</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="300"></canvas><br>
+    <label>Shape Type:</label>
+    <select id="shapeType">
+        <option value="rectangle">Rectangle</option>
+        <option value="circle">Circle</option>
+        <option value="line">Line</option>
+    </select>
+    <br>
+    <button onclick="addShape()">Add Shape</button>
+
+    <script src="script1.js"></script>
+</body>
+</html>

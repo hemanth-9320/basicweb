@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #question-container {
+            margin-bottom: 20px;
+        }
+
+        #question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #options-form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        #submit-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #score-container {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        #timer-container {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz Game</h1>
+        <div id="question-container">
+            <div id="question"></div>
+            <form id="options-form"></form>
+        </div>
+        <button id="submit-btn">Submit Answers</button>
+        <div id="score-container"></div>
+        <div id="timer-container">
+            Time Remaining: <span id="timer"></span>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "Berlin", "Madrid", "Rome"],
+                answer: "Paris"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Venus", "Jupiter"],
+                answer: "Mars"
+            },
+            {
+                question: "What is the powerhouse of the cell?",
+                options: ["Nucleus", "Mitochondria", "Chloroplast", "Ribosome"],
+                answer: "Mitochondria"
+            }
+        ];
+
+        const quizContainer = document.getElementById("question-container");
+        const optionsForm = document.getElementById("options-form");
+        const submitButton = document.getElementById("submit-btn");
+        const scoreContainer = document.getElementById("score-container");
+        const timerElement = document.getElementById("timer");
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timerSeconds = 60; // Set quiz timer duration in seconds
+
+        function displayQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+            document.getElementById("question").textContent = currentQuestion.question;
+            
+            optionsForm.innerHTML = ""; // Clear previous options
+            
+            currentQuestion.options.forEach((option, index) => {
+                const optionInput = document.createElement("input");
+                optionInput.type = "radio";
+                optionInput.name = "option";
+                optionInput.value = option;
+                optionInput.id = `option${index}`;
+                
+                const optionLabel = document.createElement("label");
+                optionLabel.textContent = option;
+                optionLabel.htmlFor = `option${index}`;
+                
+                optionsForm.appendChild(optionInput);
+                optionsForm.appendChild(optionLabel);
+                optionsForm.appendChild(document.createElement("br"));
+            });
+        }
+
+        function submitQuiz() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+
+            if (!selectedOption) {
+                alert("Please select an option.");
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            const correctAnswer = quizData[currentQuestionIndex].answer;
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizData.length) {
+                displayQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            optionsForm.style.display = "none";
+            submitButton.style.display = "none";
+            
+            const resultMessage = `You scored ${score} out of ${quizData.length}.`;
+            scoreContainer.textContent = resultMessage;
+        }
+
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                timerSeconds--;
+
+                if (timerSeconds >= 0) {
+                    timerElement.textContent = timerSeconds;
+                } else {
+                    clearInterval(timerInterval);
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        displayQuestion();
+        startTimer();
+
+        submitButton.addEventListener("click", submitQuiz);
+    </script>
+</body>
+</html>

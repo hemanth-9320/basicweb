@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Admission Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #captchaContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        #captcha {
+            flex: 1;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>School Admission Form</h2>
+        <form id="admissionForm" onsubmit="return validateForm()">
+            <label for="appNumber">Application Number:</label>
+            <input type="text" id="appNumber" name="appNumber" required><br>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="standard">Standard for Admission:</label>
+            <select id="standard" name="standard" required>
+                <option value="">Select Standard</option>
+                <option value="1">Grade 1</option>
+                <option value="2">Grade 2</option>
+                <option value="3">Grade 3</option>
+                <!-- Add more options as needed -->
+            </select><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <div id="captchaContainer">
+                <input type="text" id="captcha" name="captcha" readonly>
+                <button type="button" onclick="generateCaptcha()">Generate Captcha</button>
+            </div>
+
+            <label for="captchaInput">Enter Captcha:</label>
+            <input type="text" id="captchaInput" name="captchaInput" required><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const appNumber = document.getElementById("appNumber").value;
+            const name = document.getElementById("name").value;
+            const standard = document.getElementById("standard").value;
+            const email = document.getElementById("email").value;
+            const captchaInput = document.getElementById("captchaInput").value;
+            const captcha = document.getElementById("captcha").value;
+
+            // Validation for Application Number (must be a number)
+            if (isNaN(appNumber)) {
+                alert("Please enter a valid application number (numeric value only).");
+                return false;
+            }
+
+            // Validation for Name (alphabets only)
+            if (!/^[a-zA-Z\s]+$/.test(name)) {
+                alert("Name should contain alphabets only.");
+                return false;
+            }
+
+            // Validation for Standard (dropdown selection)
+            if (standard === "") {
+                alert("Please select a standard for admission.");
+                return false;
+            }
+
+            // Validation for Email (using regex)
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            // Validation for Captcha
+            if (captchaInput !== captcha) {
+                alert("Please enter the correct captcha.");
+                return false;
+            }
+
+            // Form is valid, proceed with submission
+            alert("Form submitted successfully!");
+            return true;
+        }
+
+        function generateCaptcha() {
+            const captcha = Math.floor(Math.random() * 10000);
+            document.getElementById("captcha").value = captcha;
+        }
+    </script>
+</body>
+</html>
